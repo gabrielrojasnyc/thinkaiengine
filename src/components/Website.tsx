@@ -1,4 +1,5 @@
-import React from 'react';
+"use client";
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,6 +10,9 @@ import {
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
+// -----------------------
+// TypeScript interfaces
+// -----------------------
 interface CaseStudy {
   id: number;
   title: string;
@@ -38,12 +42,16 @@ interface Notification {
   message: string;
 }
 
+// -----------------------
+// Sample data arrays
+// -----------------------
 const caseStudies: CaseStudy[] = [
   {
     id: 1,
     title: "AI-Powered Trading Strategy Optimization",
     client: "Global Investment Firm",
-    description: "Developed and implemented a machine learning system that analyzes market patterns and optimizes trading strategies in real-time.",
+    description:
+      "Developed and implemented a machine learning system that analyzes market patterns and optimizes trading strategies in real-time.",
     results: [
       "43% improvement in trading accuracy",
       "$5.2M increase in quarterly profits",
@@ -57,7 +65,8 @@ const caseStudies: CaseStudy[] = [
     id: 2,
     title: "Predictive Maintenance AI Solution",
     client: "Manufacturing Conglomerate",
-    description: "Created an advanced IoT and AI system that predicts equipment failures before they occur.",
+    description:
+      "Created an advanced IoT and AI system that predicts equipment failures before they occur.",
     results: [
       "85% accuracy in failure prediction",
       "$3.8M reduction in maintenance costs",
@@ -71,7 +80,8 @@ const caseStudies: CaseStudy[] = [
     id: 3,
     title: "Customer Experience Transformation",
     client: "Fortune 500 E-commerce Company",
-    description: "Implemented an AI-driven personalization engine that creates unique shopping experiences.",
+    description:
+      "Implemented an AI-driven personalization engine that creates unique shopping experiences.",
     results: [
       "32% increase in conversion rate",
       "47% improvement in customer retention",
@@ -80,14 +90,15 @@ const caseStudies: CaseStudy[] = [
     ],
     image: "/api/placeholder/600/400",
     category: "E-commerce",
-  }
+  },
 ];
 
 const services: Service[] = [
   {
     id: 1,
     title: "AI Strategy Consulting",
-    description: "Develop a comprehensive AI roadmap tailored to your business objectives.",
+    description:
+      "Develop a comprehensive AI roadmap tailored to your business objectives.",
     icon: "🧠",
     details: "Strategic consulting to navigate AI adoption and maximize ROI.",
   },
@@ -115,21 +126,26 @@ const services: Service[] = [
   {
     id: 5,
     title: "AI Ethics & Governance",
-    description: "Ensure responsible AI implementation with ethical frameworks.",
+    description:
+      "Ensure responsible AI implementation with ethical frameworks.",
     icon: "🛡️",
     details: "Implement responsible AI practices and governance.",
   },
   {
     id: 6,
     title: "Training & Support",
-    description: "Training programs to help your team leverage AI effectively.",
+    description:
+      "Training programs to help your team leverage AI effectively.",
     icon: "💬",
     details: "Empower your team with AI knowledge and skills.",
   },
 ];
 
+// -----------------------
+// CaseStudyCarousel Component
+// -----------------------
 const CaseStudyCarousel: React.FC = () => {
-  const [currentSlide, setCurrentSlide] = React.useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % caseStudies.length);
@@ -139,7 +155,7 @@ const CaseStudyCarousel: React.FC = () => {
     setCurrentSlide((prev) => (prev - 1 + caseStudies.length) % caseStudies.length);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const timer = setInterval(nextSlide, 5000);
     return () => clearInterval(timer);
   }, []);
@@ -171,7 +187,9 @@ const CaseStudyCarousel: React.FC = () => {
                     </h3>
                     <p className="text-gray-600">{study.description}</p>
                     <div className="space-y-2">
-                      <h4 className="font-semibold text-gray-900">Key Results:</h4>
+                      <h4 className="font-semibold text-gray-900">
+                        Key Results:
+                      </h4>
                       <ul className="space-y-1">
                         {study.results.map((result, index) => (
                           <li key={index} className="text-gray-600">
@@ -219,22 +237,28 @@ const CaseStudyCarousel: React.FC = () => {
   );
 };
 
+// -----------------------
+// Main Website Component
+// -----------------------
 const Website: React.FC = () => {
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [activeService, setActiveService] = React.useState<number | null>(null);
-  const [showContactForm, setShowContactForm] = React.useState(false);
-  const [formData, setFormData] = React.useState<FormData>({
-    name: '',
-    email: '',
-    message: '',
+  // State declarations
+  const [isLoading, setIsLoading] = useState(true);
+  const [notification, setNotification] = useState<Notification | null>(null);
+  const [activeService, setActiveService] = useState<number | null>(null);
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    message: "",
   });
-  const [notification, setNotification] = React.useState<Notification | null>(null);
 
-  React.useEffect(() => {
+  // Simulate loading
+  useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
 
+  // Event handlers
   const handleServiceClick = (serviceId: number) => {
     setActiveService(activeService === serviceId ? null : serviceId);
   };
@@ -259,12 +283,14 @@ const Website: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      {/* Notification Alert */}
       {notification && (
         <Alert className="fixed top-4 right-4 z-50 max-w-md">
           <AlertDescription>{notification.message}</AlertDescription>
         </Alert>
       )}
 
+      {/* Header */}
       <header className="py-20 text-center">
         <div className="container mx-auto px-4">
           <h1 className="text-5xl font-bold text-gray-900 mb-6">
@@ -283,7 +309,9 @@ const Website: React.FC = () => {
             <Button
               variant="outline"
               onClick={() => {
-                document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
+                document
+                  .getElementById('services')
+                  ?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
               Learn More
@@ -292,6 +320,7 @@ const Website: React.FC = () => {
         </div>
       </header>
 
+      {/* Success Stories Section */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
@@ -301,6 +330,7 @@ const Website: React.FC = () => {
         </div>
       </section>
 
+      {/* Services Section */}
       <section id="services" className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
@@ -321,7 +351,9 @@ const Website: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription>
-                    {activeService === service.id ? service.details : service.description}
+                    {activeService === service.id
+                      ? service.details
+                      : service.description}
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -330,6 +362,7 @@ const Website: React.FC = () => {
         </div>
       </section>
 
+      {/* Contact Form Modal */}
       {showContactForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-lg max-w-md w-full">
@@ -337,32 +370,44 @@ const Website: React.FC = () => {
             <form onSubmit={handleContactSubmit}>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1">Name</label>
+                  <label className="block text-sm font-medium mb-1">
+                    Name
+                  </label>
                   <input
                     type="text"
                     className="w-full p-2 border rounded"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Email</label>
+                  <label className="block text-sm font-medium mb-1">
+                    Email
+                  </label>
                   <input
                     type="email"
                     className="w-full p-2 border rounded"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Message</label>
+                  <label className="block text-sm font-medium mb-1">
+                    Message
+                  </label>
                   <textarea
                     className="w-full p-2 border rounded"
                     rows={4}
                     value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, message: e.target.value })
+                    }
                     required
                   />
                 </div>
@@ -380,6 +425,7 @@ const Website: React.FC = () => {
         </div>
       )}
 
+      {/* Footer */}
       <footer className="py-8 bg-gray-900 text-white">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -394,8 +440,12 @@ const Website: React.FC = () => {
             <div>
               <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
               <div className="space-x-4">
-                <a href="#" className="hover:text-blue-400">LinkedIn</a>
-                <a href="#" className="hover:text-blue-400">Twitter</a>
+                <a href="#" className="hover:text-blue-400">
+                  LinkedIn
+                </a>
+                <a href="#" className="hover:text-blue-400">
+                  Twitter
+                </a>
               </div>
             </div>
           </div>
